@@ -57,7 +57,9 @@ https://github.com/lwplw/caffe_yolov2，（已经包含了YOLO一些层的实现
 下图中，对于YOLOv2_tiny，416416的输入，经过最后一个max pool（size=2，stride=1），可以看到特征图`13*13`处理后还是`13*13`。
 这就有点问题了，测试发现，Caffe中经过这一层特征图由`13*13`变成了`12*12`，会导致在Caffe下检测结果的box有偏差。
 
-![image](https://img-blog.csdn.net/20181011141042687?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x3cGx3Zg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![image](https://github.com/lwplw/repository_image/blob/master/4871D0BC-DFB5-4354-9ED1-E0A324FCF640.png)
+
+![image](https://github.com/lwplw/repository_image/blob/master/CDA747F4-51D4-4c2c-967E-49512FD2B6DE.png)
 
 **解决方案**：
 对这层max pool使用pad，由于Caffe和DarkNet对pool的处理逻辑有些差异，需要指定DarkNet中该层padding=2，Caffe种该层pad=1。
