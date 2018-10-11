@@ -6,9 +6,9 @@ DarkNet转Caffe中有很多潜在的问题，在YOLOv1、v2、v3几个网络中�
 
 在Caffe平台实现YOLO系列，可以分成以下两种方式：
 
-（1）DarkNet平台训练完成YOLO模型，然后将`.cfg文件和.weights文件`通过脚本转换为Caffe框架下的`.prototxt文件和.caffemodel文件`，最后在Caffe下使用转换好的`.prototxt文件和.caffemodel文件`进行目标检测任务。
+（1）DarkNet平台训练完成YOLO模型，然后将.cfg文件和.weights文件通过脚本转换为Caffe框架下的.prototxt文件和.caffemodel文件，最后在Caffe下使用转换好的.prototxt文件和.caffemodel文件进行目标检测任务。
 
-（2）手动写好`.prototxt模型结构文件`，直接在Caffe下进行训练，训练完成后进行目标检测任务。
+（2）手动写好.prototxt模型结构文件，直接在Caffe下进行训练，训练完成后进行目标检测任务。
 
 以上两种方式，都是以当前Caffe已经源码实现上面那几个特殊层为前提。
 
@@ -54,22 +54,22 @@ https://github.com/lwplw/caffe_yolov2，（已经包含了YOLO一些层的实现
 
 **这里有个问题需要注意！！！**
 
-下图中，对于YOLOv2_tiny，416416的输入，经过最后一个max pool（size=2，stride=1），可以看到特征图1313处理后还是1313。
-这就有点问题了，测试发现，Caffe中经过这一层特征图由`13*13`变成了`12*12`，会导致在Caffe下检测结果的box有偏差。
+下图中，对于YOLOv2_tiny，416416的输入，经过最后一个max pool（size=2，stride=1），可以看到特征图13*13处理后还是13*13。
+这就有点问题了，测试发现，Caffe中经过这一层特征图由13*13变成了12*12，会导致在Caffe下检测结果的box有偏差。
 
 **解决方案**：
-对这层max pool使用pad，由于Caffe和DarkNet对pool的处理逻辑有些差异，需要指定DarkNet中该层`padding=2`，Caffe种该层`pad=1`。
-去看DarkNet源码`maxpool_layer.c`发现：
+对这层max pool使用pad，由于Caffe和DarkNet对pool的处理逻辑有些差异，需要指定DarkNet中该层padding=2，Caffe种该层pad=1。
+去看DarkNet源码maxpool_layer.c发现：
 
 简单说一下，在DarkNet中有pad和padding两个东西，是不一样的，重点体现在卷积层中，而对于池化层就没那么复杂了，用padding指定参数就行。
 
-处理之后，经该max pool层处理特征图会由`13*13变为14*14`，DarkNet和Caffe两个框架下达成统一。
+处理之后，经该max pool层处理特征图会由13*13变为14*14，DarkNet和Caffe两个框架下达成统一。
 
 **（2）训练完成后得到.weights模型权重文件**
 
 **（3）模型转换**
 
-使用脚本将`.cfg文件和.weights文件`转换为`.prototxt文件和.caffemodel`文件。
+使用脚本将.cfg文件和.weights文件转换为.prototxt文件和.caffemodel文件。
 
 模型转换参考：https://github.com/lwplw/darknet2caffe
 
@@ -96,4 +96,4 @@ sudo make pycaffe -j8
 python detect.py
 ```
 
-注：具体测试时使用的数据集，以及测多少张等，自行在脚本`detect.py`中进行修改。
+注：具体测试时使用的数据集，以及测多少张等，自行在脚本detect.py中进行修改。
