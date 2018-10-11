@@ -42,11 +42,13 @@ Leaky层的添加和detection层是一致的，具体实现参考：
 
 上面几个都有很大的参考价值，综合以上和其他一些实现，踩了很多坑，总算是把这条路走下来了。
 
-**结合前人成果，整理得到目前可用的Caffe源码**：https://github.com/lwplw/caffe_yolov2，（已经包含了YOLO一些层的实现）
+**结合前人成果，整理得到目前可用的Caffe源码**：
+https://github.com/lwplw/caffe_yolov2，（已经包含了YOLO一些层的实现）
 
-**具体步骤如下**（以YOLOv2_tiny为例）：
 
-#### （1）训练YOLOv2_tiny
+**具体步骤如下（以YOLOv2_tiny为例）：**
+
+**（1）训练YOLOv2_tiny**
 
 在DarkNet下完成，参考官网，https://pjreddie.com/darknet/yolo/
 
@@ -54,10 +56,6 @@ Leaky层的添加和detection层是一致的，具体实现参考：
 
 下图中，对于YOLOv2_tiny，416416的输入，经过最后一个max pool（size=2，stride=1），可以看到特征图1313处理后还是1313。
 这就有点问题了，测试发现，Caffe中经过这一层特征图由`13*13`变成了`12*12`，会导致在Caffe下检测结果的box有偏差。
-
-![这里写图片描述](https://img-blog.csdn.net/20181011141042687?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x3cGx3Zg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70 "在这里输入图片标题")
-
-![这里写图片描述](https://img-blog.csdn.net/20181011141049452?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x3cGx3Zg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70 "在这里输入图片标题")
 
 **解决方案**：
 对这层max pool使用pad，由于Caffe和DarkNet对pool的处理逻辑有些差异，需要指定DarkNet中该层`padding=2`，Caffe种该层`pad=1`。
@@ -67,15 +65,15 @@ Leaky层的添加和detection层是一致的，具体实现参考：
 
 处理之后，经该max pool层处理特征图会由`13*13变为14*14`，DarkNet和Caffe两个框架下达成统一。
 
-#### （2）训练完成后得到.weights模型权重文件
+**（2）训练完成后得到.weights模型权重文件**
 
-#### （3）模型转换
+**（3）模型转换**
 
 使用脚本将`.cfg文件和.weights文件`转换为`.prototxt文件和.caffemodel`文件。
 
 模型转换参考：https://github.com/lwplw/darknet2caffe
 
-#### （4）在Caffe框架下进行测试
+**（4）在Caffe框架下进行测试**
 
 - 下载caffe_yolov2源码：https://github.com/lwplw/caffe_yolov2
 - 解压得到文件夹caffe_yolov2-master
@@ -90,7 +88,7 @@ sudo make pycaffe -j8
 
 编译过程中有warning，但不影响。
 
-### 4）测试
+- 测试
 
 进入`caffe_yolov2-master/examples/yolov2`目录下，执行命令：
 
