@@ -65,7 +65,11 @@ https://github.com/lwplw/caffe_yolov2，（已经包含了YOLO一些层的实现
 对这层max pool使用pad，由于Caffe和DarkNet对pool的处理逻辑有些差异，需要指定DarkNet中该层padding=2，Caffe种该层pad=1。
 去看DarkNet源码maxpool_layer.c发现：
 
+![image](https://github.com/lwplw/repository_image/blob/master/menu.saveimg.savepath20181011111234.jpg)
+
 简单说一下，在DarkNet中有pad和padding两个东西，是不一样的，重点体现在卷积层中，而对于池化层就没那么复杂了，用padding指定参数就行。
+
+![image](https://github.com/lwplw/repository_image/blob/master/menu.saveimg.savepath20181011111952.jpg)
 
 处理之后，经该max pool层处理特征图会由13*13变为14*14，DarkNet和Caffe两个框架下达成统一。
 
