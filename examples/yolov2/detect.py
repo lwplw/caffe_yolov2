@@ -27,9 +27,9 @@ def draw_box(pic_name, boxes):
         # print(classes, confidence, x, y, w, h)
         
         left   = max(0, min(int(x - w/2), img_w - 1));
-		top    = max(0, min(int(y - h/2), img_h - 1));
-		right  = max(0, min(int(x + w/2), img_w - 1));
-		bottom = max(0, min(int(y + h/2), img_h - 1));
+        top    = max(0, min(int(y - h/2), img_h - 1));
+        right  = max(0, min(int(x + w/2), img_w - 1));
+        bottom = max(0, min(int(y + h/2), img_h - 1));
         print(classes, confidence, left, top, right, bottom)
         
         text = CLASSES[classes]
