@@ -3,10 +3,11 @@ https://blog.csdn.net/lwplwf/article/details/83011667
 
 DarkNet转Caffe中有很多潜在的问题，在YOLOv1、v2、v3几个网络中有一些特殊的层。要在Caffe中跑YOLO，就得在Caffe中源码实现这些层。这些层的Caffe源码实现可以在网上找到很多。
 
-**在Caffe平台实现YOLO系列，可以分成以下两种方式**：
-**（1）**DarkNet平台训练完成YOLO模型，然后将`.cfg文件和.weights文件`通过脚本转换为Caffe框架下的`.prototxt文件和.caffemodel文件`，最后在Caffe下使用转换好的`.prototxt文件和.caffemodel文件`进行目标检测任务。
+在Caffe平台实现YOLO系列，可以分成以下两种方式：
 
-**（2）**手动写好`.prototxt模型结构文件`，直接在Caffe下进行训练，训练完成后进行目标检测任务。
+（1）DarkNet平台训练完成YOLO模型，然后将`.cfg文件和.weights文件`通过脚本转换为Caffe框架下的`.prototxt文件和.caffemodel文件`，最后在Caffe下使用转换好的`.prototxt文件和.caffemodel文件`进行目标检测任务。
+
+（2）手动写好`.prototxt模型结构文件`，直接在Caffe下进行训练，训练完成后进行目标检测任务。
 
 以上两种方式，都是以当前Caffe已经源码实现上面那几个特殊层为前提。
 
@@ -15,14 +16,14 @@ DarkNet转Caffe中有很多潜在的问题，在YOLOv1、v2、v3几个网络中�
 ## 1、YOLOv1
 YOLOv1主要是需要实现detection层，再就是YOLO系列中使用的激活函数是Leaky，可以选择单独实现，也可以用ReLU实现（配置参数）。
 
-**Leaky层源码实现资源**：https://download.csdn.net/download/lwplwf/10712919
+**Leaky层**源码实现资源：https://download.csdn.net/download/lwplwf/10712919
 
-**detection层源码实现资源**：https://download.csdn.net/download/lwplwf/10712961
+**detection层**源码实现资源：https://download.csdn.net/download/lwplwf/10712961
 
 Leaky层的添加和detection层是一致的，具体实现参考：
-**（1）YOLOv1的Detection层实现**：https://blog.csdn.net/lwplwf/article/details/82788376
+（1）YOLOv1的Detection层实现：https://blog.csdn.net/lwplwf/article/details/82788376
 
-**（2）实现YOLOv1目标检测**：https://blog.csdn.net/lwplwf/article/details/82685347
+（2）实现YOLOv1目标检测：https://blog.csdn.net/lwplwf/article/details/82685347
 
 **注**：该detection的实现不支持GPU模式，通过这里初步了解Caffe下源码实现添加新层也还是可以的。
 
@@ -63,20 +64,26 @@ Leaky层的添加和detection层是一致的，具体实现参考：
 模型转换参考：https://github.com/lwplw/darknet2caffe
 
 #### （4）在Caffe框架下进行测试
+
 - 下载caffe_yolov2源码：https://github.com/lwplw/caffe_yolov2
 - 解压得到文件夹caffe_yolov2-master
 - 编译安装
+
 ```
 make all -j8
 sudo make pycaffe -j8
 ```
 
 具体参考：https://blog.csdn.net/lwplwf/article/details/82415620
+
 编译过程中有warning，但不影响。
 
 ### 4）测试
+
 进入`caffe_yolov2-master/examples/yolov2`目录下
+
 执行命令：
+
 ```
 python detect.py
 ```
