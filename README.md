@@ -75,6 +75,10 @@ https://github.com/lwplw/caffe_yolov2，（已经包含了YOLO一些层的实现
 
 **（2）训练完成后得到.weights模型权重文件**
 
+可以先在DarkNet下进行测试：
+
+测试脚本下载：https://download.csdn.net/download/lwplwf/10723849
+
 **（3）模型转换**
 
 使用脚本将.cfg文件和.weights文件转换为.prototxt文件和.caffemodel文件。
