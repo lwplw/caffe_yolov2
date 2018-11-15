@@ -46,9 +46,9 @@ def draw_box(pic_name, boxes):
 
 def detect_yolov2(pic_name):
     # data
-    image = caffe.io.load_image(pic_name) # 使用caffe接口caffe.io.load_image()读图片，调用的是scikit-image库中的skimage.io.imread函数，是RGB格式，scale在0~1之间的float。
-    # image = cv2.imread(pic_name) # 使用opencv读进来的图片，是BGR格式的（0，255），通道格式为（h,w,c），即（row,col,channel）
-    # image = image / 255.0
+    image = caffe.io.load_image(pic_name) # 使用caffe接口caffe.io.load_image()读图片，是RGB格式，scale在0～1之间的float。
+    # image = cv2.imread(pic_name) # 使用opencv读进来的图片，是BGR格式，0～255，通道格式为（h,w,c），即（row,col,channel）
+   
     transformer = caffe.io.Transformer({'data': (1, 3, 416, 416)})
     transformer.set_transpose('data', (2, 0, 1)) 
     transformed_image = transformer.preprocess('data', image)
