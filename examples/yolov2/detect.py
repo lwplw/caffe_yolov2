@@ -50,7 +50,7 @@ def detect_yolov2(pic_name):
     # image = cv2.imread(pic_name) # 使用opencv读进来的图片，是BGR格式的（0，255），通道格式为（h,w,c），即（row,col,channel）
     # image = image / 255.0
     transformer = caffe.io.Transformer({'data': (1, 3, 416, 416)})
-    # transformer.set_transpose('data', (2, 0, 1)) # 如果opencv，需要将BGR转RGB
+    transformer.set_transpose('data', (2, 0, 1)) 
     transformed_image = transformer.preprocess('data', image)
     print(transformed_image.shape)  
         
