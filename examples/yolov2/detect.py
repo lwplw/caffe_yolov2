@@ -44,15 +44,16 @@ def draw_box(pic_name, boxes):
     
     return 0
 
-    
 def detect_yolov2(pic_name):
     # data
-    image = caffe.io.load_image(pic_name)
+    image = caffe.io.load_image(pic_name) # 使用caffe接口加载的图片已经归一化到了（0，1）
+    # image = cv2.imread(pic_name) # 如果使用opencv加载图片，则是（0，255），需要处理
+    # image = image / 255.0
     transformer = caffe.io.Transformer({'data': (1, 3, 416, 416)})
-    transformer.set_transpose('data', (2, 0, 1)) # BGR转RGB
+    # transformer.set_transpose('data', (2, 0, 1)) # 如果opencv，需要将BGR转RGB
     transformed_image = transformer.preprocess('data', image)
     print(transformed_image.shape)  
-    
+        
     net.blobs['data'].data[...] = transformed_image
     output = net.forward()
     
