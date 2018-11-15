@@ -48,15 +48,17 @@ def detect_yolov2(pic_name):
     # data
     image = caffe.io.load_image(pic_name) # 使用caffe接口caffe.io.load_image()读图片，是RGB格式，scale在0～1之间的float。
     # image = cv2.imread(pic_name) # 使用opencv读进来的图片，是BGR格式，0～255，通道格式为（h,w,c），即（row,col,channel）
-   
-    transformer = caffe.io.Transformer({'data': (1, 3, 416, 416)})
-    transformer.set_transpose('data', (2, 0, 1)) 
-    transformed_image = transformer.preprocess('data', image)
-    print(transformed_image.shape)  
-        
-    net.blobs['data'].data[...] = transformed_image
-    output = net.forward()
+    print(image.shape)
     
+    transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape}) # (1, 3, 416, 416)
+    transformer.set_transpose('data', (2, 0, 1)) # python read image format as (h,w,c),-->(c,h,w)
+    transformer.set_channel_swap('blob1', (2, 1, 0)) # RGB->BGR
+    
+    transformed_image = transformer.preprocess('data', image)
+    print(transformer_image.shape)
+    net.blobs['data'].data[...] = transformed_image
+    
+    output = net.forward()
     feat = net.blobs['region1'].data[0]
     print(feat.shape)
 
